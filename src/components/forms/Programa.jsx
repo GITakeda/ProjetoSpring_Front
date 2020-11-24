@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId';
 import {getPrograma, getByIdPrograma, postPrograma, deleteByIdPrograma, putPrograma} from '../../model/ProgramaData';
-import TableGenerica from '../Table/Table';
+import TableGenerica from '../Table/TableGenerica';
 import { useEffect } from 'react';
 import BotoesCadastro from '../BotoesCadastro'
 import NotifyContext from '../../contexts/NotifyContext'
@@ -72,7 +72,7 @@ export default function Programa() {
                 postPrograma(programa, limpar, errorHandler);
                 notify("Programa gravado!");
             } else {
-                putPrograma(programa, id, errorHandler);
+                putPrograma(programa, id, limpar, errorHandler);
                 notify("Programa atualizado!");
             }
         }
@@ -111,8 +111,10 @@ export default function Programa() {
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                             <TableGenerica id="tabela"
-                            colunas={["Codigo", "Nome", "Ano"]}
-                            linhas={programas}/>
+                            colunas={["Código", "Nome", "Ano"]}
+                            linhas={programas}
+                            key={1}
+                            />
                             ]}/>
         </form>
     );

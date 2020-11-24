@@ -29,8 +29,9 @@ export function deleteById(type, id, success, errorHandler){
     .catch(error => {errorHandler(error)});
 }
 
-export function put(type, body, id, errorHandler){
+export function put(type, body, id, successHandler, errorHandler){
     httpService.put(`/${type}/${id}`, body).then(({data}) => {
+        successHandler();
     })
     .catch(error => {errorHandler(error)});
 }

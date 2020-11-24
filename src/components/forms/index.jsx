@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Typography, Menu, MenuItem, List, ListItem, ListItemText, Grid, Box, Snackbar} from "@material-ui/core";
+import { Button, Typography, Menu, MenuItem, List, ListItem, ListItemText, Box, Snackbar } from "@material-ui/core";
 import { useState } from 'react';
 import Materia from './Materia';
 import Mentor from './Mentor';
@@ -26,21 +26,21 @@ function Formulario() {
         setCurPage(page);
     };
 
-    const handleSnackClose = (event, reason) =>{
+    const handleSnackClose = (event, reason) => {
         setOpen(false);
     }
 
-    const notify = (message) =>{
+    const notify = (message) => {
         setOpen(true);
         setMessage(message);
     }
 
-    const telas = [{ component: <Typography component="h2" variant="h3" align="center">Escola</Typography>, name: "" },
-    { component: <Materia />, name: "Matéria" },
-    { component: <Mentor />, name: "Mentor" },
-    { component: <Aluno />, name: "Aluno" },
-    { component: <Mentoria />, name: "Mentoria" },
-    { component: <Programa notify={notify}/>, name: "Programa" },
+    const telas = [{ component: <Typography component="h2" variant="h3" align="center">Escola</Typography>, name: ""},
+    { component: <Materia />, name: "Matéria"},
+    { component: <Mentor />, name: "Mentor"},
+    { component: <Aluno />, name: "Aluno"},
+    { component: <Mentoria />, name: "Mentoria"},
+    { component: <Programa />, name: "Programa"},
     { component: <Nota />, name: "Nota"}
     ];
 
@@ -60,7 +60,7 @@ function Formulario() {
                     <ListItemText primary="Selecione um cadastro" secondary={telas[curPage].name} />
                 </ListItem>
             </List>
-            
+
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -75,15 +75,15 @@ function Formulario() {
                 })}
             </Menu>
             <Box width="100%" height="100%">
-                <NotifyContext.Provider value={{notify:notify}}>
+                <NotifyContext.Provider value={{ notify: notify }}>
                     {telas[curPage].component}
                 </NotifyContext.Provider>
             </Box>
 
-            <Snackbar 
+            <Snackbar
                 anchorOrigin={{
-                    vertical:'bottom',
-                    horizontal:'left',
+                    vertical: 'bottom',
+                    horizontal: 'left',
                 }}
                 open={open}
                 autoHideDuration={4000}

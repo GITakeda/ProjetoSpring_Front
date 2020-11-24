@@ -18,6 +18,6 @@ export const deleteByIdPrograma = (id, success, errorHandler) => {
     deleteById(type, id, success, errorHandler);
 }
 
-export const putPrograma = (body, id, errorHandler) => {
-    put(type, body, id, errorHandler);
+export const putPrograma = (body, id, successHandler, errorHandler) => {
+    put(type, body, id, successHandler, errorHandler);
 }

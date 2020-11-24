@@ -18,6 +18,6 @@ export const deleteByIdNota = (id, success, errorHandler) => {
     deleteById(type, id, success, errorHandler);
 }
 
-export const putNota = (body, id, errorHandler) => {
-    put(type, body, id, errorHandler);
+export const putNota = (body, id, successHandler, errorHandler) => {
+    put(type, body, id, successHandler, errorHandler);
 }

@@ -18,6 +18,6 @@ export const deleteByIdMentor = (id, success, errorHandler) => {
     deleteById(type, id, success, errorHandler);
 }
 
-export const putMentor = (body, id, errorHandler) => {
-    put(type, body, id, errorHandler);
+export const putMentor = (body, id, successHandler, errorHandler) => {
+    put(type, body, id, successHandler, errorHandler);
 }

@@ -18,6 +18,6 @@ export const deleteByIdMentoria = (id, success, errorHandler) => {
     deleteById(type, id, success, errorHandler);
 }
 
-export const putMentoria = (body, id, errorHandler) => {
-    put(type, body, id, errorHandler);
+export const putMentoria = (body, id, successHandler, errorHandler) => {
+    put(type, body, id, successHandler, errorHandler);
 }

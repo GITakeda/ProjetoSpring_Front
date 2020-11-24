@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import { TextField, Button, Typography, Container, IconButton, MenuItem, Select, InputLabel, Box } from "@material-ui/core";
+import { TextField, Typography, MenuItem, Select, InputLabel, Box } from "@material-ui/core";
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getPrograma, putPrograma } from '../../model/ProgramaData'
+import { getPrograma } from '../../model/ProgramaData'
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdAluno, getAluno, getByIdAluno, postAluno, putAluno } from '../../model/AlunoData';
 import AccordionGenerico from '../AccordionGenerico';
-import TableGenerica from '../Table/Table';
+import TableGenerica from '../Table/TableGenerica';
 import BotoesCadastro from '../BotoesCadastro';
 
 export default function Aluno() {
@@ -82,7 +82,7 @@ export default function Aluno() {
                 postAluno(aluno, limpar, errorHandler);
                 notify("Aluno gravado!");
             } else{
-                putAluno(aluno, id, errorHandler);
+                putAluno(aluno, id, limpar, errorHandler);
                 notify("Aluno atualizado!");
             }
         }}>
@@ -137,7 +137,7 @@ export default function Aluno() {
             <AccordionGenerico label="Registros" onClick={() => atualizar()}
                 components={[
                     <TableGenerica id="tabela"
-                        colunas={["Codigo", "Nome", "Classe", "Programa"]}
+                        colunas={["Código", "Nome", "Classe", "Programa"]}
                         key={1}
                         linhas={alunos.map(aluno => {
                             return {
