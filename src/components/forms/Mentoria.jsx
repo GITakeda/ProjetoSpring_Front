@@ -1,5 +1,5 @@
-import { Box, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
-import React, { useContext } from 'react';
+import { Box, Typography } from '@material-ui/core';
+import React, { useCallback, useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { getAluno } from '../../model/AlunoData';
@@ -7,10 +7,10 @@ import { getMentor } from '../../model/MentorData';
 import { deleteByIdMentoria, getByIdMentoria, getMentoria, postMentoria } from '../../model/MentoriaData';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext'
-import BotoesCadastro from '../BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
-import { postPrograma } from '../../model/ProgramaData';
+import ComboBox from '../ComboBox';
 
 export default function Mentoria() {
 
@@ -37,12 +37,12 @@ export default function Mentoria() {
         setMentor_id(retorno.mentorDTO.id);
     }
 
-    const errorHandler = (error) => {
-        limpar();
+    const errorHandler = useCallback((error) => {
         if (error.response) {
             notify(error.response.data.mensagem);
         }
-    }
+    }, [notify]
+    )
 
     const limpar = () => {
         setId(0);
@@ -66,56 +66,34 @@ export default function Mentoria() {
         getMentoria(setMentorias, errorHandler);
         getAluno(setAlunos, errorHandler);
         getMentor(setMentores, errorHandler);
-    }, [atualizou]);
+    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={
             (event) => {
                 limpar();
-                const mentoria = {id: id, alunoDTO:{id: aluno_id}, mentorDTO:{id: mentor_id}};
+                const mentoria = { id: id, alunoDTO: { id: aluno_id }, mentorDTO: { id: mentor_id } };
                 event.preventDefault();
 
-                if(!id){
+                if (!id) {
                     postMentoria(mentoria, () => {
                         limpar()
                         notify("Mentoria gravada");
                     }, errorHandler);
                 }
-
             }
         }>
-            <Box align="center" >
-                <Typography component="h2" variant="h3" align="center">Mentoria</Typography>
+            <Typography component="h2" variant="h3" align="center">Mentoria</Typography>
+            <Box align="center">
+                <Box width="50vw">
+                    <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                <CampoId setValue={setId} value={id} onBlur={handleBusca}/>
+                    <ComboBox options={alunos} setValue={setAluno_id} label="Aluno" value={aluno_id} />
+                    {/* <ComboBox options={mentorias} setValue={setMentoria_id} label="Mentoria" value={mentoria_id} /> */}
+                    <ComboBox options={mentores} value={mentor_id} setValue={setMentor_id} label="Mentor" />
 
-                <InputLabel>Aluno</InputLabel>
-                <Select
-                    onChange={(event) => {
-                        setAluno_id(event.target.value);
-                    }}
-                    id="select-aluno"
-                    value={aluno_id}>
-                        <MenuItem key={0} value={0}>None</MenuItem>
-                    {alunos.map((aluno, index) => {
-                        return (<MenuItem key={aluno.id} value={aluno.id}>{aluno.nome}</MenuItem>);
-                    })}
-                </Select>
-
-                <InputLabel>Mentor</InputLabel>
-                <Select
-                    onChange={(event) => {
-                        setMentor_id(event.target.value);
-                    }}
-                    id="select-mentor"
-                    value={mentor_id}>
-                        <MenuItem key={0} value={0}>None</MenuItem>
-                    {mentores.map((mentor, index) => {
-                        return (<MenuItem key={mentor.id} value={mentor.id}>{mentor.nome}</MenuItem>);
-                    })}
-                </Select>
-
-                <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                    <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                </Box>
             </Box>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[

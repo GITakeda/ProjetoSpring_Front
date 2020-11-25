@@ -1,5 +1,5 @@
 import './App.css';
-import Formulario from "./components/forms"
+import Formulario from "./components"
 import { Container } from "@material-ui/core";
 
 

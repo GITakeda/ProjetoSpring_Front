@@ -1,11 +1,11 @@
 import { TextField, Typography, Box } from '@material-ui/core';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId';
-import {getPrograma, getByIdPrograma, postPrograma, deleteByIdPrograma, putPrograma} from '../../model/ProgramaData';
+import { getPrograma, getByIdPrograma, postPrograma, deleteByIdPrograma, putPrograma } from '../../model/ProgramaData';
 import TableGenerica from '../Table/TableGenerica';
 import { useEffect } from 'react';
-import BotoesCadastro from '../BotoesCadastro'
+import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import NotifyContext from '../../contexts/NotifyContext'
 
 import AccordionGenerico from '../AccordionGenerico'
@@ -21,7 +21,7 @@ export default function Programa() {
 
     const [atualizou, setAtualizou] = useState(0);
 
-    const {notify} = useContext(NotifyContext);
+    const { notify } = useContext(NotifyContext);
 
     const handleBusca = () => {
         getByIdPrograma(Number(id), setEntity, errorHandler);
@@ -33,12 +33,12 @@ export default function Programa() {
         setAno(retorno.ano);
     }
 
-    const errorHandler = (error) => {
-        limpar();
+    const errorHandler = useCallback((error) => {
         if (error.response) {
             notify(error.response.data.mensagem);
         }
-    }
+    }, [notify]
+    )
 
     const limpar = () => {
         setId(0);
@@ -60,7 +60,7 @@ export default function Programa() {
 
     useEffect(() => {
         getPrograma(setProgramas, errorHandler);
-    }, [atualizou]);
+    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
@@ -77,23 +77,25 @@ export default function Programa() {
             }
         }
         }>
-            <Box align="center" >
-                <Typography component="h2" variant="h3" align="center">Programa</Typography>
+            <Typography component="h2" variant="h3" align="center">Programa</Typography>
+            <Box align="center">
+                <Box width="50vw">
 
-                <CampoId setValue={setId} value={id} onBlur={handleBusca} />
+                    <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                <TextField
-                    onChange={(event) => setNome(event.target.value)}
-                    id="nome"
-                    name="nome"
-                    label="Nome"
-                    type="text"
-                    margin="normal"
-                    required
-                    value={nome}
-                />
+                    <TextField
+                        onChange={(event) => setNome(event.target.value)}
+                        id="nome"
+                        name="nome"
+                        label="Nome"
+                        type="text"
+                        margin="normal"
+                        required
+                        value={nome}
+                        fullWidth
+                    />
 
-                <div >
+
                     <TextField
                         onChange={(event) => setAno(event.target.value)}
                         id="ano"
@@ -103,19 +105,20 @@ export default function Programa() {
                         margin="normal"
                         required
                         value={ano}
+                        fullWidth
                     />
-                </div>
 
-                <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                    <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                </Box>
             </Box>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
-                            <TableGenerica id="tabela"
-                            colunas={["Código", "Nome", "Ano"]}
-                            linhas={programas}
-                            key={1}
-                            />
-                            ]}/>
+                <TableGenerica id="tabela"
+                    colunas={["Código", "Nome", "Ano"]}
+                    linhas={programas}
+                    key={1}
+                />
+            ]} />
         </form>
     );
 

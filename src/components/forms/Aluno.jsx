@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { TextField, Typography, MenuItem, Select, InputLabel, Box } from "@material-ui/core";
+import React, { useCallback, useContext } from 'react';
+import { TextField, Typography, Box } from "@material-ui/core";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getPrograma } from '../../model/ProgramaData'
@@ -8,14 +8,16 @@ import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdAluno, getAluno, getByIdAluno, postAluno, putAluno } from '../../model/AlunoData';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
-import BotoesCadastro from '../BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
+import ComboBox from '../ComboBox';
+
 
 export default function Aluno() {
 
     const [id, setId] = useState(0);
     const [nome, setNome] = useState("");
     const [classe, setClasse] = useState("");
-    const [programa, setPrograma] = useState({ id: 0 });
+    const [programa, setPrograma] = useState(0);
 
     const [alunos, setAlunos] = useState([]);
     const [programas, setProgramas] = useState([]);
@@ -35,18 +37,18 @@ export default function Aluno() {
         setPrograma(retorno.programaDTO);
     }
 
-    const errorHandler = (error) => {
-        limpar();
+    const errorHandler = useCallback((error) => {
         if (error.response) {
             notify(error.response.data.mensagem);
         }
-    }
+    }, [notify]
+    )
 
     const limpar = () => {
         setId(0);
         setNome("");
         setClasse("");
-        setPrograma({id:0});
+        setPrograma(0);
         atualizar();
     }
 
@@ -64,46 +66,47 @@ export default function Aluno() {
     useEffect(() => {
         getAluno(setAlunos, errorHandler);
         getPrograma(setProgramas, errorHandler);
-    }, [atualizou]);
+    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
             event.preventDefault();
-            const aluno = { id, nome, classe, programaDTO: programa };
+            const aluno = { id, nome, classe, programaDTO: {id: programa} };
 
-            if(programa.id == 0){
+            if (programa.id == 0) {
                 notify("Selecione um programa!");
                 return;
             }
 
             limpar();
 
-            if(!id){
+            if (!id) {
                 postAluno(aluno, limpar, errorHandler);
                 notify("Aluno gravado!");
-            } else{
+            } else {
                 putAluno(aluno, id, limpar, errorHandler);
                 notify("Aluno atualizado!");
             }
         }}>
+            <Typography component="h2" variant="h3" align="center">Aluno</Typography>
             <Box align="center">
-                <Typography component="h2" variant="h3" align="center">Aluno</Typography>
+                <Box width="50vw">
 
-                <CampoId setValue={setId} value={id} onBlur={handleBusca} />
+                    <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                <TextField
-                    onChange={(event) => {
-                        setNome(event.target.value);
-                    }}
-                    value={nome}
-                    id="nome"
-                    label="Nome"
-                    type="text"
-                    margin="normal"
-                    required
-                ></TextField>
+                    <TextField
+                        onChange={(event) => {
+                            setNome(event.target.value);
+                        }}
+                        value={nome}
+                        id="nome"
+                        label="Nome"
+                        type="text"
+                        margin="normal"
+                        required
+                        fullWidth
+                    ></TextField>
 
-                <div>
                     <TextField
                         onChange={(event) => {
                             setClasse(event.target.value);
@@ -113,26 +116,13 @@ export default function Aluno() {
                         label="Classe"
                         type="text"
                         margin="normal"
-                        required
+                        fullWidth
                     ></TextField>
-                </div>
 
-                <InputLabel id="programas-label">Programa</InputLabel>
-                <Select
-                    labelId="programas-label"
-                    onChange={(event) => {
-                        setPrograma({id:event.target.value});
-                    }}
-                    id="select-programa"
-                    required
-                    value={programa.id}>
-                        <MenuItem value={0} key={0}>None</MenuItem>
-                    {programas.map((programa, index) => {
-                        return (<MenuItem value={programa.id} key={index}>{programa.nome}</MenuItem>);
-                    })}
-                </Select>
+                    <ComboBox options={programas} setValue={setPrograma} label="Programa" value={programa} />
 
-                <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                    <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                </Box>
             </Box>
             <AccordionGenerico label="Registros" onClick={() => atualizar()}
                 components={[
@@ -141,11 +131,12 @@ export default function Aluno() {
                         key={1}
                         linhas={alunos.map(aluno => {
                             return {
-                            id:aluno.id,
-                            nome:aluno.nome,
-                            classe:aluno.classe,
-                            programa:`${aluno.programaDTO.id} / ${aluno.programaDTO.nome}`
-                        }})} />
+                                id: aluno.id,
+                                nome: aluno.nome,
+                                classe: aluno.classe,
+                                programa: `${aluno.programaDTO.id} / ${aluno.programaDTO.nome}`
+                            }
+                        })} />
                 ]} />
         </form>)
 }

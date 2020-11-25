@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState } from 'react';
-import { TextField, Button, Typography, Box } from '@material-ui/core';
+import { TextField, Typography, Box } from '@material-ui/core';
 import CampoId from '../CampoId';
 import { useContext } from 'react';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdMentor, getByIdMentor, getMentor, postMentor, putMentor } from '../../model/MentorData';
 import { useEffect } from 'react';
-import BotoesCadastro from '../BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import TableGenerica from '../Table/TableGenerica';
 import AccordionGenerico from '../AccordionGenerico'
 
@@ -30,12 +30,12 @@ export default function Mentor() {
         setNome(retorno.nome);
     }
 
-    const errorHandler = (error) => {
-        limpar();
+    const errorHandler = useCallback((error) => {
         if (error.response) {
             notify(error.response.data.mensagem);
         }
-    }
+    }, [notify]
+    )
 
     const limpar = () => {
         setId(0);
@@ -56,7 +56,7 @@ export default function Mentor() {
 
     useEffect(() => {
         getMentor(setMentores, errorHandler);
-    }, [atualizou]);
+    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
@@ -72,11 +72,10 @@ export default function Mentor() {
                 notify("Mentor atualizado!");
             }
         }}>
+            <Typography component="h2" variant="h3" align="center">Mentor</Typography>
             <Box align="center">
-                <Typography component="h2" variant="h3" align="center">Mentor</Typography>
-
-                <CampoId setValue={setId} value={id} onBlur={handleBusca} />
-                <div>
+                <Box width="50vw">
+                    <CampoId setValue={setId} value={id} onBlur={handleBusca} />
                     <TextField
                         id="nome"
                         label="Nome"
@@ -88,9 +87,10 @@ export default function Mentor() {
                         }}
                         margin="normal"
                         required
+                        fullWidth
                     />
-                </div>
-                <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                    <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                </Box>
             </Box>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
@@ -99,7 +99,7 @@ export default function Mentor() {
                     linhas={mentores}
                     key={1}
                 />
-            ]}/>
+            ]} />
         </form>
     );
 

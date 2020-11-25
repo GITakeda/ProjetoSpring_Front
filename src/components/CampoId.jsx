@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, TextField } from '@material-ui/core'
+import { Box, TextField } from '@material-ui/core'
 
 export default function CampoId({ setValue, value, onBlur }) {
     return (
@@ -19,6 +19,7 @@ export default function CampoId({ setValue, value, onBlur }) {
                 label="Id"
                 type="number"
                 margin="normal"
+                fullWidth
             ></TextField>
         </Box>
     );

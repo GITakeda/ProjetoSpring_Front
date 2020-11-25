@@ -1,13 +1,14 @@
 import React from 'react';
-import { Button, Typography, Menu, MenuItem, List, ListItem, ListItemText, Box, Snackbar } from "@material-ui/core";
+import { Button, Typography, Menu, MenuItem, Box, Snackbar } from "@material-ui/core";
 import { useState } from 'react';
-import Materia from './Materia';
-import Mentor from './Mentor';
-import Aluno from './Aluno';
-import Mentoria from './Mentoria';
-import Programa from './Programa';
-import Nota from './Nota';
-import NotifyContext from "../../contexts/NotifyContext";
+import Materia from './forms/Materia';
+import Mentor from './forms/Mentor';
+import Aluno from './forms/Aluno';
+import Mentoria from './forms/Mentoria';
+import Programa from './forms/Programa';
+import Nota from './forms/Nota';
+import NotifyContext from "../contexts/NotifyContext";
+import useStyles from "./BotoesCadastro/style/buttons"
 
 function Formulario() {
 
@@ -35,32 +36,26 @@ function Formulario() {
         setMessage(message);
     }
 
-    const telas = [{ component: <Typography component="h2" variant="h3" align="center">Escola</Typography>, name: ""},
-    { component: <Materia />, name: "Matéria"},
-    { component: <Mentor />, name: "Mentor"},
-    { component: <Aluno />, name: "Aluno"},
-    { component: <Mentoria />, name: "Mentoria"},
-    { component: <Programa />, name: "Programa"},
-    { component: <Nota />, name: "Nota"}
+    const telas = [{ component: <Typography component="h2" variant="h3" align="center">Escola</Typography>, name: "" },
+    { component: <Materia />, name: "Matéria" },
+    { component: <Mentor />, name: "Mentor" },
+    { component: <Aluno />, name: "Aluno" },
+    { component: <Mentoria />, name: "Mentoria" },
+    { component: <Programa />, name: "Programa" },
+    { component: <Nota />, name: "Nota" }
     ];
 
     return (
         <>
-            <Button variant="outlined" onClick={() => handleClose(0)}>
-                Home
-            </Button>
-            <List component="nav" aria-label="Device settings">
-                <ListItem
-                    button
-                    aria-haspopup="true"
-                    aria-controls="lock-menu"
-                    aria-label="cadastro selecionado"
-                    onClick={handleClick}
-                >
-                    <ListItemText primary="Selecione um cadastro" secondary={telas[curPage].name} />
-                </ListItem>
-            </List>
-
+            <Box className={useStyles().root}>
+                <Button variant="outlined" onClick={() => handleClose(0)}>
+                    Home
+                </Button>
+                <Button variant="outlined" aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
+                    Menu
+                </Button>
+            </Box>
+            
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -69,11 +64,12 @@ function Formulario() {
             >
                 {telas.map((q, index) => {
                     if (index == 0) {
-                        return;
+                        return undefined;
                     }
                     return (<MenuItem onClick={(event) => handleClose(event.target.value)} value={index} key={index}>{q.name}</MenuItem>);
                 })}
             </Menu>
+
             <Box width="100%" height="100%">
                 <NotifyContext.Provider value={{ notify: notify }}>
                     {telas[curPage].component}
@@ -91,7 +87,7 @@ function Formulario() {
                 message={message}
                 action={
                     <React.Fragment>
-                        <Button color="secondary" size="small" variant="contained" color="default" onClick={handleSnackClose}>CLOSE</Button>
+                        <Button size="small" variant="contained" color="default" onClick={handleSnackClose}>CLOSE</Button>
                     </React.Fragment>
                 }
             />

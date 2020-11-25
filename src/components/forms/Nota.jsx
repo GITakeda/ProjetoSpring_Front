@@ -1,5 +1,5 @@
-import { TextField, InputLabel, Select, Box, MenuItem, Typography } from '@material-ui/core';
-import React from 'react';
+import { TextField, Box, Typography } from '@material-ui/core';
+import React, { useCallback } from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId';
 import { getMentoria } from '../../model/MentoriaData'
@@ -13,9 +13,10 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdNota, getByIdNota, getNota, postNota, putNota } from '../../model/NotaData';
-import BotoesCadastro from '../BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
+import ComboBox from '../ComboBox';
 
 export default function Nota() {
 
@@ -46,12 +47,13 @@ export default function Nota() {
         setPontuacao(retorno.pontuacao);
     }
 
-    const errorHandler = (error) => {
-        limpar();
+    const errorHandler = useCallback((error) => {
+        console.log(error);
         if (error.response) {
             notify(error.response.data.mensagem);
         }
-    }
+    }, [notify]
+    )
 
     const limpar = () => {
         setId(0);
@@ -88,67 +90,50 @@ export default function Nota() {
         getNota(setNotas, errorHandler);
         getMateria(setMaterias, errorHandler);
         getMentoria(setMentorias, errorHandler);
-    }, [atualizou]);
+    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={
             (event) => {
-                limpar();
-                const nota = { id: id, 
-                    mentoriaDTO: { id: mentoria_id }, 
-                    materiaDTO: { id: materia_id }, 
-                    data: (new Date(data)).toJSON(), 
-                    pontuacao: pontuacao }
+                const nota = {
+                    id: id,
+                    mentoriaDTO: { id: mentoria_id },
+                    materiaDTO: { id: materia_id },
+                    data: (new Date(data)).toJSON(),
+                    pontuacao: pontuacao
+                }
+
                 event.preventDefault();
 
-                if(!id){
+                if(data == "Invalid Date"){
+                    notify("Data inválida!");
+                    return;
+                }
+
+                if (!id) {
                     postNota(nota, limpar, errorHandler);
                     notify("Nota gravada!");
-                } else{
-                    console.log(nota);
-                    putNota(nota, limpar, errorHandler);
+                } else {
+                    putNota(nota, id, limpar, errorHandler);
                     notify("Nota atualizada!");
                 }
+
+                limpar();
             }
         }>
-            {/* <Box align="center"> */}
-            {/* <Box  align="left" width="25%"> */}
-                <Box align="center" >
-                <Typography component="h2" variant="h3" >Nota</Typography>
+            <Typography component="h2" variant="h3" align="center" >Nota</Typography>
+            <Box align="center">
+                <Box width="50vw">
 
-                <CampoId setValue={setId} value={id} onBlur={handleBusca}/>
+                    <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                <InputLabel>Mentoria</InputLabel>
-                <Select
-                    onChange={(event) => {
-                        setMentoria_id(event.target.value);
-                    }}
-                    id="select-mentoria"
-                    value={mentoria_id}>
-                        <MenuItem key={0} value={0}>None</MenuItem>
-                    {mentorias.map((mentoria) => {
-                        return (<MenuItem key={mentoria.id} value={mentoria.id}>
-                            {`(${mentoria.id})  ${resizeString(mentoria.alunoDTO.nome)}
-                             - ${resizeString(mentoria.mentorDTO.nome)}`}
-                        </MenuItem>);
-                    })}
-                </Select>
+                    <ComboBox options={mentorias} setValue={setMentoria_id} label="Mentoria" value={mentoria_id} campoDescricao={(option) => {
+                        return `(${option.id})  ${resizeString(option.alunoDTO.nome)}
+                        - ${resizeString(option.mentorDTO.nome)}`
+                    }} />
 
-                <InputLabel>Matéria</InputLabel>
-                <div>
-                    <Select
-                        onChange={(event) => {
-                            setMateria_id(event.target.value);
-                        }}
-                        id="select-materia"
-                        value={materia_id}>
-                            <MenuItem key={0} value={0}>None</MenuItem>
-                        {materias.map((materia) => {
-                            return (<MenuItem key={materia.id} value={materia.id}>{materia.nome}</MenuItem>);
-                        })}
-                    </Select>
-                </div>
-                <div>
+                    <ComboBox setValue={setMateria_id} value={materia_id} options={materias} label="Matéria" />
+
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
@@ -158,8 +143,11 @@ export default function Nota() {
                             id="datePicker"
                             label="Período da nota"
                             value={data}
+                            fullWidth
                             onChange={
+                                
                                 (date) => {
+                                    console.log(data);
                                     setData(date);
                                 }
                             }
@@ -168,23 +156,25 @@ export default function Nota() {
                             }}
                         />
                     </MuiPickersUtilsProvider>
-                </div>
 
-                <div>
                     <TextField
                         onChange={
                             (event) => {
                                 setPontuacao(Number(event.target.value.replace(',', '.')));
                             }
                         }
+                        onFocus={(event) => {
+                            setPontuacao("");
+                        }}
                         id="pontuacao"
                         label="Pontuação"
                         type="number"
                         value={pontuacao}
+                        fullWidth
                     />
-                </div>
 
-                <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                    <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                </Box>
             </Box>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[

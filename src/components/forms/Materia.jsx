@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
-import { TextField, Button, Typography, Container, IconButton, Box } from "@material-ui/core";
+import React, { useCallback, useContext } from 'react';
+import { TextField, Typography, Box } from "@material-ui/core";
 import { useState } from 'react';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdMateria, getByIdMateria, getMateria, postMateria, putMateria } from '../../model/MateriaData';
 import { useEffect } from 'react';
-import BotoesCadastro from '../BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
 
@@ -31,12 +31,12 @@ export default function Materia() {
         setDescricao(retorno.descricao);
     }
 
-    const errorHandler = (error) => {
-        limpar();
+    const errorHandler = useCallback((error) => {
         if (error.response) {
             notify(error.response.data.mensagem);
         }
-    }
+    }, [notify]
+    )
 
     const limpar = () => {
         setId(0);
@@ -58,7 +58,7 @@ export default function Materia() {
 
     useEffect(() => {
         getMateria(setMaterias, errorHandler);
-    }, [atualizou]);
+    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
@@ -67,31 +67,36 @@ export default function Materia() {
             event.preventDefault();
 
             if (!id) {
-                postMateria(materia, limpar, errorHandler);
-                notify("Matéria gravada!");
+                postMateria(materia,
+                    () => {
+                        limpar();
+                        notify("Matéria gravada!");
+                    }
+                    , errorHandler);
             } else {
                 putMateria(materia, id, limpar, errorHandler);
                 notify("Matéria atualizada!");
             }
         }}>
+            <Typography component="h2" variant="h3" align="center">Matéria</Typography>
             <Box align="center">
-                <Typography component="h2" variant="h3" align="center">Matéria</Typography>
+                <Box width="50vw">
 
-                <CampoId setValue={setId} value={id} onBlur={handleBusca}/>
+                    <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                <TextField
-                    onChange={(event) => {
-                        setNome(event.target.value);
-                    }}
-                    id="nome"
-                    label="Nome"
-                    type="text"
-                    margin="normal"
-                    value={nome}
-                    required
-                ></TextField>
+                    <TextField
+                        onChange={(event) => {
+                            setNome(event.target.value);
+                        }}
+                        id="nome"
+                        label="Nome"
+                        type="text"
+                        margin="normal"
+                        value={nome}
+                        required
+                        fullWidth
+                    ></TextField>
 
-                <div>
                     <TextField
                         onChange={(event) => {
                             setDescricao(event.target.value);
@@ -102,22 +107,23 @@ export default function Materia() {
                         margin="normal"
                         value={descricao}
                         required
+                        fullWidth
                     />
-                </div>
 
-                <BotoesCadastro type="submit" limpar={limpar} apagar={apagar}/>
-
-                <AccordionGenerico label="Registros" onClick={() => atualizar()}
-                    components={
-                        [
-                            <TableGenerica id="tabela"
-                            colunas={["Código", "Nome", "Descrição"]}
-                            linhas={materias}
-                            key={1}
-                            />
-                        ]
-                    }
-                />
+                    <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
+                </Box>
             </Box>
+
+            <AccordionGenerico label="Registros" onClick={() => atualizar()}
+                        components={
+                            [
+                                <TableGenerica id="tabela"
+                                    colunas={["Código", "Nome", "Descrição"]}
+                                    linhas={materias}
+                                    key={1}
+                                />
+                            ]
+                        }
+                    />
         </form>)
 }
