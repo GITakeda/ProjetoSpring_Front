@@ -1,9 +1,9 @@
-import { TextField, Box, Typography } from '@material-ui/core';
+import { TextField, Box, Typography, FormLabel } from '@material-ui/core';
 import React, { useCallback } from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId';
-import { getMentoria } from '../../model/MentoriaData'
-import { getMateria } from '../../model/MateriaData'
+import { getByIdMentoria, getMentoria } from '../../model/MentoriaData'
+import { getByIdMateria, getMateria } from '../../model/MateriaData'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -17,6 +17,7 @@ import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
 import ComboBox from '../ComboBox';
+import CampoTexto from '../CampoTexto'
 
 export default function Nota() {
 
@@ -48,8 +49,8 @@ export default function Nota() {
     }
 
     const errorHandler = useCallback((error) => {
-        console.log(error);
         if (error.response) {
+            limpar();
             notify(error.response.data.mensagem);
         }
     }, [notify]
@@ -97,8 +98,8 @@ export default function Nota() {
             (event) => {
                 const nota = {
                     id: id,
-                    mentoriaDTO: { id: mentoria_id },
-                    materiaDTO: { id: materia_id },
+                    mentoriaDTO: { id: Number(mentoria_id) },
+                    materiaDTO: { id: Number(materia_id) },
                     data: (new Date(data)).toJSON(),
                     pontuacao: pontuacao
                 }
@@ -127,10 +128,21 @@ export default function Nota() {
 
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
+                    {/* <CampoId setValue={setMentoria_id} value={mentoria_id} onBlur={() => {
+                        getByIdMentoria(Number(mentoria_id), setMentoria_id, errorHandler);
+                    }} label="Mentoria" />
+                    <Box align="left">
+                <FormLabel>{mentoria_id}</FormLabel>
+                    </Box> */}
+
                     <ComboBox options={mentorias} setValue={setMentoria_id} label="Mentoria" value={mentoria_id} campoDescricao={(option) => {
                         return `(${option.id})  ${resizeString(option.alunoDTO.nome)}
                         - ${resizeString(option.mentorDTO.nome)}`
                     }} />
+
+                    {/* <CampoId setValue={setMateria_id} value={materia_id} onBlur={(id) => {
+                        getByIdMateria(Number(materia_id), setMateria_id, errorHandler);
+                    }} label="Matéria" /> */}
 
                     <ComboBox setValue={setMateria_id} value={materia_id} options={materias} label="Matéria" />
 
@@ -147,7 +159,6 @@ export default function Nota() {
                             onChange={
                                 
                                 (date) => {
-                                    console.log(data);
                                     setData(date);
                                 }
                             }
@@ -156,22 +167,8 @@ export default function Nota() {
                             }}
                         />
                     </MuiPickersUtilsProvider>
-
-                    <TextField
-                        onChange={
-                            (event) => {
-                                setPontuacao(Number(event.target.value.replace(',', '.')));
-                            }
-                        }
-                        onFocus={(event) => {
-                            setPontuacao("");
-                        }}
-                        id="pontuacao"
-                        label="Pontuação"
-                        type="number"
-                        value={pontuacao}
-                        fullWidth
-                    />
+                    
+                    <CampoTexto value={pontuacao} setValue={setPontuacao} id="pontuacao" label="Pontuação" type="number" maxSize={10}/>
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
                 </Box>
@@ -187,7 +184,7 @@ export default function Nota() {
                             mentoria: `${resizeStringWithSize(nota.mentoriaDTO.alunoDTO.nome, 20)}
                             - ${resizeStringWithSize(nota.mentoriaDTO.mentorDTO.nome, 20)}`,
                             materia: nota.materiaDTO.nome,
-                            data: nota.data,
+                            data: `${nota.data[2]}/${nota.data[1]}/${nota.data[0]}`,
                             pontuacao: nota.pontuacao
                         }
                     })} />

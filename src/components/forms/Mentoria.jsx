@@ -89,7 +89,6 @@ export default function Mentoria() {
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <ComboBox options={alunos} setValue={setAluno_id} label="Aluno" value={aluno_id} />
-                    {/* <ComboBox options={mentorias} setValue={setMentoria_id} label="Mentoria" value={mentoria_id} /> */}
                     <ComboBox options={mentores} value={mentor_id} setValue={setMentor_id} label="Mentor" />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />

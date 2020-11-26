@@ -10,6 +10,7 @@ import NotifyContext from '../../contexts/NotifyContext'
 
 import AccordionGenerico from '../AccordionGenerico'
 import { useContext } from 'react';
+import CampoTexto from '../CampoTexto';
 
 export default function Programa() {
 
@@ -83,30 +84,10 @@ export default function Programa() {
 
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                    <TextField
-                        onChange={(event) => setNome(event.target.value)}
-                        id="nome"
-                        name="nome"
-                        label="Nome"
-                        type="text"
-                        margin="normal"
-                        required
-                        value={nome}
-                        fullWidth
-                    />
+                    <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
 
 
-                    <TextField
-                        onChange={(event) => setAno(event.target.value)}
-                        id="ano"
-                        name="ano"
-                        label="Ano"
-                        type="number"
-                        margin="normal"
-                        required
-                        value={ano}
-                        fullWidth
-                    />
+                    <CampoTexto value={ano} setValue={setAno} id="ano" label="Ano" type="number" maxSize={4} />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
                 </Box>

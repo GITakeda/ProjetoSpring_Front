@@ -10,6 +10,7 @@ import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import ComboBox from '../ComboBox';
+import CampoTexto from '../CampoTexto';
 
 
 export default function Aluno() {
@@ -93,31 +94,10 @@ export default function Aluno() {
                 <Box width="50vw">
 
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
+                    
+                    <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
 
-                    <TextField
-                        onChange={(event) => {
-                            setNome(event.target.value);
-                        }}
-                        value={nome}
-                        id="nome"
-                        label="Nome"
-                        type="text"
-                        margin="normal"
-                        required
-                        fullWidth
-                    ></TextField>
-
-                    <TextField
-                        onChange={(event) => {
-                            setClasse(event.target.value);
-                        }}
-                        value={classe}
-                        id="classe"
-                        label="Classe"
-                        type="text"
-                        margin="normal"
-                        fullWidth
-                    ></TextField>
+                    <CampoTexto value={classe} setValue={setClasse} id="classe" label="Classe" required={false}/>
 
                     <ComboBox options={programas} setValue={setPrograma} label="Programa" value={programa} />
 

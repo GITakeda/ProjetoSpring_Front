@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
+import CampoTexto from '../CampoTexto';
 
 export default function Materia() {
 
@@ -84,31 +85,9 @@ export default function Materia() {
 
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                    <TextField
-                        onChange={(event) => {
-                            setNome(event.target.value);
-                        }}
-                        id="nome"
-                        label="Nome"
-                        type="text"
-                        margin="normal"
-                        value={nome}
-                        required
-                        fullWidth
-                    ></TextField>
+                    <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome"/>
 
-                    <TextField
-                        onChange={(event) => {
-                            setDescricao(event.target.value);
-                        }}
-                        id="descricao"
-                        label="Descrição"
-                        type="text"
-                        margin="normal"
-                        value={descricao}
-                        required
-                        fullWidth
-                    />
+                    <CampoTexto value={descricao} setValue={setDescricao} id="descricao" label="Descrição"/>
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
                 </Box>

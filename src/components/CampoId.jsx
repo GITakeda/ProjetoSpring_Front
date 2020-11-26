@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, TextField } from '@material-ui/core'
+import { Box, FormLabel, TextField } from '@material-ui/core'
 
-export default function CampoId({ setValue, value, onBlur }) {
+export default function CampoId({ setValue, value, onBlur, label = "id" }) {
     return (
         <Box>
             <TextField
@@ -16,7 +16,7 @@ export default function CampoId({ setValue, value, onBlur }) {
                 }}
                 value={value}
                 id="id"
-                label="Id"
+                label={label}
                 type="number"
                 margin="normal"
                 fullWidth

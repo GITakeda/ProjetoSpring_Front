@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import TableGenerica from '../Table/TableGenerica';
 import AccordionGenerico from '../AccordionGenerico'
+import CampoTexto from '../CampoTexto';
 
 export default function Mentor() {
 
@@ -76,19 +77,7 @@ export default function Mentor() {
             <Box align="center">
                 <Box width="50vw">
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
-                    <TextField
-                        id="nome"
-                        label="Nome"
-                        name="nome"
-                        type="text"
-                        value={nome}
-                        onChange={(event) => {
-                            setNome(event.target.value);
-                        }}
-                        margin="normal"
-                        required
-                        fullWidth
-                    />
+                    <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome"/>
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
                 </Box>
             </Box>

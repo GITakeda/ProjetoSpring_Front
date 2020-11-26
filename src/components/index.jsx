@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Typography, Menu, MenuItem, Box, Snackbar } from "@material-ui/core";
+import { Button, Typography, Menu, MenuItem, Box, Snackbar, Slide } from "@material-ui/core";
 import { useState } from 'react';
 import Materia from './forms/Materia';
 import Mentor from './forms/Mentor';
@@ -28,6 +28,8 @@ function Formulario() {
     };
 
     const handleSnackClose = (event, reason) => {
+        if(reason === 'clickaway') return;
+
         setOpen(false);
     }
 
@@ -51,7 +53,7 @@ function Formulario() {
                 <Button variant="outlined" onClick={() => handleClose(0)}>
                     Home
                 </Button>
-                <Button variant="outlined" aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
+                <Button variant="outlined" onClick={handleClick}>
                     Menu
                 </Button>
             </Box>
@@ -85,9 +87,11 @@ function Formulario() {
                 autoHideDuration={4000}
                 onClose={handleSnackClose}
                 message={message}
+                TransitionComponent={Slide}
+                color="blue"
                 action={
                     <React.Fragment>
-                        <Button size="small" variant="contained" color="default" onClick={handleSnackClose}>CLOSE</Button>
+                        <Button size="small" variant="contained" color="default" aria-label="close" onClick={handleSnackClose}>CLOSE</Button>
                     </React.Fragment>
                 }
             />
