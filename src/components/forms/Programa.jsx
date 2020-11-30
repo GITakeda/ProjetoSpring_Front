@@ -86,7 +86,6 @@ export default function Programa() {
 
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
 
-
                     <CampoTexto value={ano} setValue={setAno} id="ano" label="Ano" type="number" maxSize={4} />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
@@ -95,9 +94,20 @@ export default function Programa() {
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"
-                    colunas={["Código", "Nome", "Ano"]}
-                    linhas={programas}
+                    colunas={[
+                        { name: "Código", column: "id" },
+                        { name: "Nome", column: "nome" },
+                        { name: "Ano", column: "ano" }
+                    ]}
                     key={1}
+                    valueTemplate={
+                        {
+                            id: 0,
+                            nome: "",
+                            ano: ""
+                        }
+                    }
+                    getValues={getPrograma}
                 />
             ]} />
         </form>

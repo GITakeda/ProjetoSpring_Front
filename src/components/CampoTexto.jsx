@@ -1,7 +1,7 @@
 
 import {TextField} from '@material-ui/core';
 
-export default function CampoTexto({ value, setValue, required=true, id, label, type ="text", maxSize = 255, validations = () => {return true} }) {
+export default function CampoTexto({ value, setValue, required=true, id, label, type ="text", maxSize = 255, validations = () => {return true}, onFocus = () => {} }) {
     return (
         <TextField
             onChange={(event) => {
@@ -11,9 +11,14 @@ export default function CampoTexto({ value, setValue, required=true, id, label, 
                     text = text.slice(0, maxSize);
                 }
 
-                validations(text);
+                if(!validations(text)){
+                    return;
+                }
 
                 setValue(text);
+            }}
+            onFocus={() => {
+                
             }}
             value={value}
             id={id}

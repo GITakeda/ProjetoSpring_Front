@@ -10,6 +10,7 @@ import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import TableGenerica from '../Table/TableGenerica';
 import AccordionGenerico from '../AccordionGenerico'
 import CampoTexto from '../CampoTexto';
+import { getAluno } from '../../model/AlunoData';
 
 export default function Mentor() {
 
@@ -55,10 +56,6 @@ export default function Mentor() {
         setAtualizou(atualizou + 1);
     }
 
-    useEffect(() => {
-        getMentor(setMentores, errorHandler);
-    }, [atualizou, errorHandler]);
-
     return (
         <form onSubmit={(event) => {
             limpar();
@@ -84,10 +81,40 @@ export default function Mentor() {
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica
-                    colunas={["Código", "Nome"]}
-                    linhas={mentores}
+                    colunas={[
+                        {name: "Código", column: "id"},
+                        {name: "Nome", column: "nome"}
+                    ]}
+                    setEntity={setEntity}
+                    valueTemplate={
+                        {
+                            id: 0,
+                            nome: ""
+                        }
+                    }
+                    getValues={getMentor}
                     key={1}
                 />
+
+                // <TableGenerica id="tabela"
+                //         colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
+                //         key={1}
+                //         setEntity={setEntity}
+                //         valueTemplate={
+                //             {
+                //                 id: 0,
+                //                 nome: "",
+                //                 classe: "",
+                //                 programaDTO: { id: 0, nome: "" }
+                //             }
+                //         }
+                //         getValues={getAluno}
+                //         getDescricao={(value, index) => {
+                //             return (
+                //                 <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
+                //             )
+                //         }}
+                //     />
             ]} />
         </form>
     );

@@ -2,8 +2,8 @@ import { get, getById, deleteById, post, put } from './DataGenerico';
 
 const type = 'materia';
 
-export const getMateria = (setValue, errorHandler) => {
-    get(type, setValue, errorHandler);
+export const getMateria = (setValue, page, size, sort, errorHandler) => {
+    get(type, setValue, page, size, sort, errorHandler);
 }
 
 export const getByIdMateria = (id, setValue, errorHandler) => {

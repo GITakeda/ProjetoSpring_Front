@@ -1,8 +1,8 @@
 import React, { useCallback, useContext } from 'react';
-import { TextField, Typography, Box } from "@material-ui/core";
+import { Typography, Box, TableCell } from "@material-ui/core";
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getPrograma } from '../../model/ProgramaData'
+import { getByIdPrograma, getPrograma } from '../../model/ProgramaData'
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdAluno, getAluno, getByIdAluno, postAluno, putAluno } from '../../model/AlunoData';
@@ -11,6 +11,7 @@ import TableGenerica from '../Table/TableGenerica';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import ComboBox from '../ComboBox';
 import CampoTexto from '../CampoTexto';
+import CampoBusca from '../CampoBusca';
 
 
 export default function Aluno() {
@@ -19,9 +20,9 @@ export default function Aluno() {
     const [nome, setNome] = useState("");
     const [classe, setClasse] = useState("");
     const [programa, setPrograma] = useState(0);
+    const [programaDTO, setProgramaDTO] = useState({ id: 0 });
 
-    const [alunos, setAlunos] = useState([]);
-    const [programas, setProgramas] = useState([]);
+    const [teste, setTeste] = useState("");
 
     const [atualizou, setAtualizou] = useState(0);
 
@@ -65,14 +66,12 @@ export default function Aluno() {
     }
 
     useEffect(() => {
-        getAluno(setAlunos, errorHandler);
-        getPrograma(setProgramas, errorHandler);
     }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
             event.preventDefault();
-            const aluno = { id, nome, classe, programaDTO: {id: programa} };
+            const aluno = { id, nome, classe, programaDTO: { id: programa } };
 
             if (programa.id == 0) {
                 notify("Selecione um programa!");
@@ -94,12 +93,23 @@ export default function Aluno() {
                 <Box width="50vw">
 
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
-                    
+
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
 
-                    <CampoTexto value={classe} setValue={setClasse} id="classe" label="Classe" required={false}/>
+                    <CampoTexto value={classe} setValue={setClasse} id="classe" label="Classe" required={false} />
 
-                    <ComboBox options={programas} setValue={setPrograma} label="Programa" value={programa} />
+                    <CampoBusca setValue={setPrograma}
+                        value={programa}
+                        label="Programa"
+                        onBlur={() => { getByIdPrograma(programa, setProgramaDTO, errorHandler) }}
+                        getDescricao={() => { return programaDTO.nome }}
+                        validations={ (value) => {
+                            if(value.match(/\D/)){
+                                return false;
+                            }
+                            return true;
+                        }}
+                    />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
                 </Box>
@@ -107,16 +117,24 @@ export default function Aluno() {
             <AccordionGenerico label="Registros" onClick={() => atualizar()}
                 components={[
                     <TableGenerica id="tabela"
-                        colunas={["Código", "Nome", "Classe", "Programa"]}
+                        colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
                         key={1}
-                        linhas={alunos.map(aluno => {
-                            return {
-                                id: aluno.id,
-                                nome: aluno.nome,
-                                classe: aluno.classe,
-                                programa: `${aluno.programaDTO.id} / ${aluno.programaDTO.nome}`
+                        setEntity={setEntity}
+                        valueTemplate={
+                            {
+                                id: 0,
+                                nome: "",
+                                classe: "",
+                                programaDTO: { id: 0, nome: "" }
                             }
-                        })} />
+                        }
+                        getValues={getAluno}
+                        getDescricao={(value, index) => {
+                            return (
+                                <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
+                            )
+                        }}
+                    />
                 ]} />
         </form>)
 }

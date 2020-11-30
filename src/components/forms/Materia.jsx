@@ -57,10 +57,6 @@ export default function Materia() {
         setAtualizou(atualizou + 1);
     }
 
-    useEffect(() => {
-        getMateria(setMaterias, errorHandler);
-    }, [atualizou, errorHandler]);
-
     return (
         <form onSubmit={(event) => {
             limpar();
@@ -97,10 +93,42 @@ export default function Materia() {
                         components={
                             [
                                 <TableGenerica id="tabela"
-                                    colunas={["Código", "Nome", "Descrição"]}
+                                    colunas={[
+                                        {name: "Código", column: "id"}, 
+                                        {name: "Nome", column: "nome"}, 
+                                        {name: "Descrição", column: "descricao"}]}
+                                    setEntity={setEntity}
+                                    valueTemplate={
+                                        {
+                                            id: 0,
+                                            nome: "",
+                                            descricao: ""
+                                        }
+                                    }
+                                    getValues={getMateria}
                                     linhas={materias}
                                     key={1}
                                 />
+
+                                // <TableGenerica id="tabela"
+                                //     colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
+                                //     key={1}
+                                //     setEntity={setEntity}
+                                //     valueTemplate={
+                                //         {
+                                //             id: 0,
+                                //             nome: "",
+                                //             classe: "",
+                                //             programaDTO: { id: 0, nome: "" }
+                                //         }
+                                //     }
+                                //     getValues={getAluno}
+                                //     getDescricao={(value, index) => {
+                                //         return (
+                                //             <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
+                                //         )
+                                //     }}
+                                // />
                             ]
                         }
                     />

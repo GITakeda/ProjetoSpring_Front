@@ -2,8 +2,8 @@ import { get, getById, deleteById, post, put } from './DataGenerico';
 
 const type = 'nota';
 
-export const getNota = (setValue, errorHandler) => {
-    get(type, setValue, errorHandler);
+export const getNota = (setValue, page, size, sort, errorHandler) => {
+    get(type, setValue, page, size, sort, errorHandler);
 }
 
 export const getByIdNota = (id, setValue, errorHandler) => {

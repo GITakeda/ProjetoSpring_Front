@@ -2,8 +2,8 @@ import { get, getById, deleteById, post, put } from './DataGenerico';
 
 const type = 'mentor';
 
-export const getMentor = (setValue, errorHandler) => {
-    get(type, setValue, errorHandler);
+export const getMentor = (setValue, page, size, sort, errorHandler) => {
+    get(type, setValue, page, size, sort, errorHandler);
 }
 
 export const getByIdMentor = (id, setValue, errorHandler) => {
