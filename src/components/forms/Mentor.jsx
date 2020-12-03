@@ -1,23 +1,19 @@
 import React, { useCallback } from 'react';
 import { useState } from 'react';
-import { TextField, Typography, Box } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import CampoId from '../CampoId';
 import { useContext } from 'react';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdMentor, getByIdMentor, getMentor, postMentor, putMentor } from '../../model/MentorData';
-import { useEffect } from 'react';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import TableGenerica from '../Table/TableGenerica';
 import AccordionGenerico from '../AccordionGenerico'
 import CampoTexto from '../CampoTexto';
-import { getAluno } from '../../model/AlunoData';
 
 export default function Mentor() {
 
     const [id, setId] = useState(0);
     const [nome, setNome] = useState("");
-
-    const [mentores, setMentores] = useState([]);
 
     const [atualizou, setAtualizou] = useState(0);
 

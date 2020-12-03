@@ -2,15 +2,14 @@ import { Box, TableCell, Typography } from '@material-ui/core';
 import React, { useCallback, useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { getAluno, getByIdAluno } from '../../model/AlunoData';
-import { getByIdMentor, getMentor } from '../../model/MentorData';
+import { getByIdAluno } from '../../model/AlunoData';
+import { getByIdMentor } from '../../model/MentorData';
 import { deleteByIdMentoria, getByIdMentoria, getMentoria, postMentoria } from '../../model/MentoriaData';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext'
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
-import ComboBox from '../ComboBox';
 import CampoBusca from '../CampoBusca';
 
 export default function Mentoria() {

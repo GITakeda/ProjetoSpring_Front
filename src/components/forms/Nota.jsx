@@ -1,9 +1,9 @@
-import { TextField, Box, Typography, FormLabel, InputLabel, TableCell } from '@material-ui/core';
+import { Box, Typography, TableCell } from '@material-ui/core';
 import React, { useCallback } from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId';
-import { getByIdMentoria, getMentoria } from '../../model/MentoriaData'
-import { getByIdMateria, getMateria } from '../../model/MateriaData'
+import { getByIdMentoria } from '../../model/MentoriaData'
+import { getByIdMateria } from '../../model/MateriaData'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -16,7 +16,6 @@ import { deleteByIdNota, getByIdNota, getNota, postNota, putNota } from '../../m
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
-import ComboBox from '../ComboBox';
 import CampoTexto from '../CampoTexto'
 import CampoBusca from '../CampoBusca'
 
@@ -27,8 +26,6 @@ export default function Nota() {
     const [mentoria_id, setMentoria_id] = useState(0);
     const [data, setData] = useState(Date.now);
     const [pontuacao, setPontuacao] = useState(0.0);
-
-    const [notas, setNotas] = useState([]);
 
     const [materia, setMateria] = useState({ id: 0, nome: "" });
     const [mentoria, setMentoria] = useState({ id: 0, alunoDTO: { nome: "" }, mentorDTO: { nome: "" } });
@@ -155,7 +152,7 @@ export default function Nota() {
                         getDescricao={
                             () => {
 
-                                if (!mentoria.alunoDTO || mentoria.alunoDTO.nome == "") {
+                                if (!mentoria.alunoDTO || mentoria.alunoDTO.nome === "") {
                                     return "";
                                 }
 
@@ -232,13 +229,12 @@ export default function Nota() {
                             case 1:
                                 return <TableCell key={index}>{`${resizeStringWithSize(value.alunoDTO.nome, 20)}
                         - ${resizeStringWithSize(value.mentorDTO.nome, 20)}`}</TableCell>
-                                break;
                             case 2:
                                 return <TableCell key={index}>{value.nome}</TableCell>
-                                break;
                             case 3:
                                 return <TableCell key={index}>{`${value[2]} - ${value[1]} - ${value[0]}`}</TableCell>
-                                break;
+                            default:
+                                return <></>;
                         }
                     }}
                 />

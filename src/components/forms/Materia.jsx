@@ -1,10 +1,9 @@
 import React, { useCallback, useContext } from 'react';
-import { TextField, Typography, Box } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import { useState } from 'react';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdMateria, getByIdMateria, getMateria, postMateria, putMateria } from '../../model/MateriaData';
-import { useEffect } from 'react';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
@@ -15,8 +14,6 @@ export default function Materia() {
     const [id, setId] = useState(0);
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
-
-    const [materias, setMaterias] = useState([]);
 
     const [atualizou, setAtualizou] = useState(0);
 
@@ -107,7 +104,6 @@ export default function Materia() {
                                         }
                                     }
                                     getValues={getMateria}
-                                    linhas={materias}
                                     key={1}
                                 />
                             ]

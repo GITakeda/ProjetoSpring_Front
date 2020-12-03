@@ -5,7 +5,9 @@ export function get(type, setValue, page, size, sort, direction, errorHandler){
         setValue(data);
     })
     .catch(error => {
-        errorHandler(error);
+        if(errorHandler !== undefined){
+            errorHandler(error);
+        }
     });
 }
 

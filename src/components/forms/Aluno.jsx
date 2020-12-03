@@ -1,8 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { Typography, Box, TableCell } from "@material-ui/core";
 import { useState } from 'react';
-import { useEffect } from 'react';
-import { getByIdPrograma, getPrograma } from '../../model/ProgramaData'
+import { getByIdPrograma } from '../../model/ProgramaData'
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdAluno, getAluno, getByIdAluno, postAluno, putAluno } from '../../model/AlunoData';
@@ -61,7 +60,6 @@ export default function Aluno() {
         setPrograma(0);
         setProgramaDTO({id: 0});
         atualizar();
-        console.log(atualizou)
     }
 
     const apagar = () => {
@@ -74,9 +72,6 @@ export default function Aluno() {
     const atualizar = () => {
         setAtualizou(atualizou + 1);
     }
-
-    useEffect(() => {
-    }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
