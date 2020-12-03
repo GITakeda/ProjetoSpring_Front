@@ -18,7 +18,7 @@ export default function CampoTexto({ value, setValue, required=true, id, label, 
                 setValue(text);
             }}
             onFocus={() => {
-                
+                onFocus();
             }}
             value={value}
             id={id}

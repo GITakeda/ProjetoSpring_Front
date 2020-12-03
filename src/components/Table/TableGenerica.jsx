@@ -1,10 +1,10 @@
 import React from 'react';
-import { TableContainer, Table, TableHead, Button, TableRow, TableCell, Paper, TableBody, TablePagination, TableFooter, InputLabel, TableSortLabel } from '@material-ui/core'
+import { TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, TablePagination, TableFooter, InputLabel, TableSortLabel } from '@material-ui/core'
 import './index.css';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-export default function TableGenerica({ colunas, linhas, getValues = (setValues, page, rowsPerPage, sort, direction, error) => { return [] }, valueTemplate, getDescricao = (value) => { return <TableCell></TableCell> }, setEntity = (entity) => { } }) {
+export default function TableGenerica({ colunas, linhas, getValues = (setValues, page, rowsPerPage, sort, direction, error) => { return [] }, valueTemplate, getDescricao = (value) => { return <TableCell></TableCell> }, setEntity = (entity) => { }, atualizou }) {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -12,39 +12,29 @@ export default function TableGenerica({ colunas, linhas, getValues = (setValues,
     const [sort, setSort] = useState("");
     const [direction, setDirection] = useState("asc");
 
-    const [atualizou, setAtualizou] = useState(0);
+    const [atualizouLocal, setAtualizouLocal] = useState(0);
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
-        setAtualizou(atualizou + 1);
+        setAtualizouLocal(atualizouLocal + 1);
     }
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-        setAtualizou(atualizou + 1);
+        setAtualizouLocal(atualizouLocal + 1);
     };
-
-    const getPages = (rows) => {
-        if (rows.length > 0) {
-            let rowsStartPosition = page * rowsPerPage;
-            let rowsEndPosition = rowsStartPosition + rowsPerPage;
-            return linhas.slice(rowsStartPosition, rowsEndPosition);
-        }
-
-        return linhas;
-    }
 
     const handleSort = (columnId) => {
         if(columnId === sort){
-            if(direction === "asc"){
+            if(direction === "desc"){
                 setSort("");
-                setDirection("desc");
+                setDirection("asc");
                 return;
             }
-            setDirection("asc");
-        } else{
             setDirection("desc");
+        } else{
+            setDirection("asc");
         }
 
         setSort(columnId);
@@ -52,7 +42,7 @@ export default function TableGenerica({ colunas, linhas, getValues = (setValues,
 
     useEffect(() => {
         getValues(setValues, page, rowsPerPage, sort, direction, (error) => { return "" });
-    }, [atualizou]);
+    }, [atualizou,atualizouLocal]);
 
     return (
         <TableContainer component={Paper}>
@@ -65,7 +55,7 @@ export default function TableGenerica({ colunas, linhas, getValues = (setValues,
                                     onClick={
                                         () => {
                                             handleSort(q.column)
-                                            setAtualizou(atualizou + 1);
+                                            setAtualizouLocal(atualizouLocal + 1);
                                         }
                                     } active={sort === q.column} >{q.name}</TableSortLabel>
                             </TableCell>

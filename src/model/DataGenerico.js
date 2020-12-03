@@ -1,4 +1,3 @@
-import React, {createContext} from 'react';
 import httpService from '../services/httpService'
 
 export function get(type, setValue, page, size, sort, direction, errorHandler){
@@ -7,7 +6,6 @@ export function get(type, setValue, page, size, sort, direction, errorHandler){
     })
     .catch(error => {
         errorHandler(error);
-        Promise.reject(error);
     });
 }
 
@@ -17,7 +15,6 @@ export function getById(type, id, setValue, errorHandler){
     })
     .catch(error => {
         errorHandler(error);
-        Promise.reject(error);
     });
 }
 
@@ -27,7 +24,6 @@ export function post(type, body, successHandler, errorHandler){
     })
     .catch(error => {
         errorHandler(error);
-        Promise.reject(error);
     });
 }
 
@@ -37,7 +33,6 @@ export function deleteById(type, id, success, errorHandler){
     })
     .catch(error => {
         errorHandler(error);
-        Promise.reject(error);
     });
 }
 
@@ -47,6 +42,5 @@ export function put(type, body, id, successHandler, errorHandler){
     })
     .catch(error => {
         errorHandler(error);
-        Promise.reject(error);
     });
 }

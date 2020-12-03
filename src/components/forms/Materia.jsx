@@ -34,6 +34,7 @@ export default function Materia() {
 
     const errorHandler = useCallback((error) => {
         if (error.response) {
+            limpar();
             notify(error.response.data.mensagem);
         }
     }, [notify]
@@ -59,7 +60,6 @@ export default function Materia() {
 
     return (
         <form onSubmit={(event) => {
-            limpar();
             const materia = { id: id, nome: nome, descricao: descricao };
             event.preventDefault();
 
@@ -93,6 +93,7 @@ export default function Materia() {
                         components={
                             [
                                 <TableGenerica id="tabela"
+                                    atualizou = {atualizou}
                                     colunas={[
                                         {name: "Código", column: "id"}, 
                                         {name: "Nome", column: "nome"}, 
@@ -109,26 +110,6 @@ export default function Materia() {
                                     linhas={materias}
                                     key={1}
                                 />
-
-                                // <TableGenerica id="tabela"
-                                //     colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
-                                //     key={1}
-                                //     setEntity={setEntity}
-                                //     valueTemplate={
-                                //         {
-                                //             id: 0,
-                                //             nome: "",
-                                //             classe: "",
-                                //             programaDTO: { id: 0, nome: "" }
-                                //         }
-                                //     }
-                                //     getValues={getAluno}
-                                //     getDescricao={(value, index) => {
-                                //         return (
-                                //             <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
-                                //         )
-                                //     }}
-                                // />
                             ]
                         }
                     />

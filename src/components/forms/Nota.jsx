@@ -57,10 +57,30 @@ export default function Nota() {
     }, [notify]
     )
 
+    const errorHandlerMentoria = useCallback((error) => {
+        if (error.response) {
+            setMentoria({id: 0});
+            setMentoria_id(0);
+            notify(error.response.data.mensagem);
+        }
+    }, [notify]
+    )
+
+    const errorHandlerMateria = useCallback((error) => {
+        if (error.response) {
+            setMateria({id: 0});
+            setMateria_id(0);
+            notify(error.response.data.mensagem);
+        }
+    }, [notify]
+    )
+
     const limpar = () => {
         setId(0);
         setMateria_id(0);
         setMentoria_id(0);
+        setMateria({id: 0});
+        setMentoria({id: 0});
         setData(Date.now);
         setPontuacao(0.0);
     }
@@ -89,9 +109,6 @@ export default function Nota() {
     }
 
     useEffect(() => {
-        // getNota(setNotas, errorHandler);
-        // getMateria(setMaterias, errorHandler);
-        // getMentoria(setMentorias, errorHandler);
     }, [atualizou, errorHandler]);
 
     return (
@@ -119,8 +136,6 @@ export default function Nota() {
                     putNota(nota, id, limpar, errorHandler);
                     notify("Nota atualizada!");
                 }
-
-                limpar();
             }
         }>
             <Typography component="h2" variant="h3" align="center" >Nota</Typography>
@@ -129,15 +144,13 @@ export default function Nota() {
 
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                    {/* <ComboBox options={mentorias} setValue={setMentoria_id} label="Mentoria" value={mentoria_id} campoDescricao={(option) => {
-                        return `(${option.id})  ${resizeString(option.alunoDTO.nome)}
-                        - ${resizeString(option.mentorDTO.nome)}`
-                    }} /> */}
                     <CampoBusca setValue={setMentoria_id} value={mentoria_id} label="Mentoria"
+                        placeHolder="Insira o id de uma mentoria"
+                        
                         onBlur={
                             () => {
                                 setMentoria({ id: 0, alunoDTO: { nome: "" }, mentorDTO: { nome: "" } });
-                                getByIdMentoria(mentoria_id, setMentoria, errorHandler);
+                                getByIdMentoria(mentoria_id, setMentoria, errorHandlerMentoria);
                             }}
                         getDescricao={
                             () => {
@@ -151,12 +164,12 @@ export default function Nota() {
                             }}
                     ></CampoBusca>
 
-                    {/* <ComboBox setValue={setMateria_id} value={materia_id} options={materias} label="Matéria" /> */}
                     <CampoBusca setValue={setMateria_id} value={materia_id} label="Matéria" onBlur={
                         () => {
                             setMateria({ id: 0, nome: "" });
-                            getByIdMateria(materia_id, setMateria, errorHandler);
+                            getByIdMateria(materia_id, setMateria, errorHandlerMateria);
                         }}
+                        placeHolder="Insira o id de uma matéria"
                         getDescricao={
                             () => {
                                 return materia.nome;
@@ -186,7 +199,7 @@ export default function Nota() {
                         />
                     </MuiPickersUtilsProvider>
 
-                    <CampoTexto value={pontuacao} setValue={setPontuacao} id="pontuacao" label="Pontuação" type="number" maxSize={10} />
+                    <CampoTexto value={pontuacao} setValue={setPontuacao} onFocus={() => {setPontuacao("")}} id="pontuacao" label="Pontuação" type="number" maxSize={10} />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
                 </Box>
@@ -194,6 +207,7 @@ export default function Nota() {
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"
+                    atualizou={atualizou}
                     key={1}
                     colunas={[
                         { name: "Código", column: "id" },

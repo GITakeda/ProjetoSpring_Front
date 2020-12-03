@@ -37,6 +37,25 @@ export default function Mentoria() {
 
     const errorHandler = useCallback((error) => {
         if (error.response) {
+            limpar();
+            notify(error.response.data.mensagem);
+        }
+    }, [notify]
+    )
+
+    const errorHandlerAluno = useCallback((error) => {
+        if (error.response) {
+            setAlunoDTO({id: 0});
+            setAluno_id(0);
+            notify(error.response.data.mensagem);
+        }
+    }, [notify]
+    )
+
+    const errorHandlerMentor = useCallback((error) => {
+        if (error.response) {
+            setMentorDTO({id: 0});
+            setMentor_id(0);
             notify(error.response.data.mensagem);
         }
     }, [notify]
@@ -46,6 +65,8 @@ export default function Mentoria() {
         setId(0);
         setMentor_id(0);
         setAluno_id(0);
+        setMentorDTO({id: 0});
+        setAlunoDTO({id: 0});
         atualizar();
     }
 
@@ -66,7 +87,6 @@ export default function Mentoria() {
     return (
         <form onSubmit={
             (event) => {
-                limpar();
                 const mentoria = { id: id, alunoDTO: { id: aluno_id }, mentorDTO: { id: mentor_id } };
                 event.preventDefault();
 
@@ -83,20 +103,20 @@ export default function Mentoria() {
                 <Box width="50vw">
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
-                    {/* <ComboBox options={alunos} setValue={setAluno_id} label="Aluno" value={aluno_id} /> */}
                     <CampoBusca setValue={setAluno_id}
                         value={aluno_id}
                         label="Aluno"
-                        onBlur={() => { getByIdAluno(aluno_id, setAlunoDTO, errorHandler) }}
+                        placeHolder="Insira o id de um aluno"
+                        onBlur={() => { getByIdAluno(aluno_id, setAlunoDTO, errorHandlerAluno) }}
                         getDescricao={() => { return alunoDTO.nome }}
 
                     />
 
-                    {/* <ComboBox options={mentores} value={mentor_id} setValue={setMentor_id} label="Mentor" /> */}
                     <CampoBusca setValue={setMentor_id}
                         value={mentor_id}
                         label="Mentor"
-                        onBlur={() => { getByIdMentor(mentor_id, setMentorDTO, errorHandler) }}
+                        placeHolder="Insira o id de um mentor"
+                        onBlur={() => { getByIdMentor(mentor_id, setMentorDTO, errorHandlerMentor) }}
                         getDescricao={() => { return mentorDTO.nome }}
                         validations={ (value) => {
                             if(value.match(/\D/)){
@@ -113,6 +133,7 @@ export default function Mentoria() {
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"
                     key={1}
+                    atualizou={atualizou}
                     colunas={[
                         { name: "Código", column: "id" },
                         { name: "Aluno", column: "aluno_id" },
@@ -126,29 +147,11 @@ export default function Mentoria() {
                         }
                     }
                     getValues={getMentoria}
+                    setEntity={setEntity}
                     getDescricao={(value, index) => {
                         return <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
                     }}
                 />
-
-                // <TableGenerica id="tabela"
-                //         colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
-                //         key={1}
-                //         setEntity={setEntity}
-                //         valueTemplate={
-                //             {
-                //                 id: 0,
-                //                 nome: "",
-                //                 classe: "",
-                //                 programaDTO: { id: 0, nome: "" }
-                //             }
-                //         }
-                //         getValues={getAluno}
-                //         getDescricao={(value, index) => {
-                //             return (
-                //                 <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
-                //             )
-                //         }}
             ]} />
 
         </form>

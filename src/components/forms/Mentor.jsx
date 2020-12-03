@@ -34,6 +34,7 @@ export default function Mentor() {
 
     const errorHandler = useCallback((error) => {
         if (error.response) {
+            limpar();
             notify(error.response.data.mensagem);
         }
     }, [notify]
@@ -58,7 +59,6 @@ export default function Mentor() {
 
     return (
         <form onSubmit={(event) => {
-            limpar();
             const mentor = { id: id, nome: nome };
             event.preventDefault();
 
@@ -81,6 +81,7 @@ export default function Mentor() {
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica
+                    atualizou={atualizou}
                     colunas={[
                         {name: "Código", column: "id"},
                         {name: "Nome", column: "nome"}
@@ -95,26 +96,6 @@ export default function Mentor() {
                     getValues={getMentor}
                     key={1}
                 />
-
-                // <TableGenerica id="tabela"
-                //         colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
-                //         key={1}
-                //         setEntity={setEntity}
-                //         valueTemplate={
-                //             {
-                //                 id: 0,
-                //                 nome: "",
-                //                 classe: "",
-                //                 programaDTO: { id: 0, nome: "" }
-                //             }
-                //         }
-                //         getValues={getAluno}
-                //         getDescricao={(value, index) => {
-                //             return (
-                //                 <TableCell key={index}>{`${value.id} - ${value.nome}`}</TableCell>
-                //             )
-                //         }}
-                //     />
             ]} />
         </form>
     );

@@ -18,8 +18,6 @@ export default function Programa() {
     const [nome, setNome] = useState("");
     const [ano, setAno] = useState("");
 
-    const [programas, setProgramas] = useState([]);
-
     const [atualizou, setAtualizou] = useState(0);
 
     const { notify } = useContext(NotifyContext);
@@ -36,6 +34,7 @@ export default function Programa() {
 
     const errorHandler = useCallback((error) => {
         if (error.response) {
+            limpar();
             notify(error.response.data.mensagem);
         }
     }, [notify]
@@ -60,12 +59,10 @@ export default function Programa() {
     }
 
     useEffect(() => {
-        getPrograma(setProgramas, errorHandler);
     }, [atualizou, errorHandler]);
 
     return (
         <form onSubmit={(event) => {
-            limpar();
             const programa = { id: id, nome: nome, ano: ano };
             event.preventDefault();
 
@@ -81,7 +78,6 @@ export default function Programa() {
             <Typography component="h2" variant="h3" align="center">Programa</Typography>
             <Box align="center">
                 <Box width="50vw">
-
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
@@ -94,6 +90,7 @@ export default function Programa() {
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"
+                    atualizou={atualizou}
                     colunas={[
                         { name: "Código", column: "id" },
                         { name: "Nome", column: "nome" },
@@ -108,6 +105,7 @@ export default function Programa() {
                         }
                     }
                     getValues={getPrograma}
+                    setEntity={setEntity}
                 />
             ]} />
         </form>

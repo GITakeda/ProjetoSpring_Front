@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, InputLabel, TextField } from '@material-ui/core'
 
-export default function CampoBusca({ setValue, value, onBlur, label, id, type, getDescricao, validations = (value) => true }) {
+export default function CampoBusca({ setValue, value, onBlur, label, id, type, getDescricao, validations = (value) => true, placeHolder }) {
     return (
         <Box align="left">
             <TextField
@@ -19,6 +19,7 @@ export default function CampoBusca({ setValue, value, onBlur, label, id, type, g
                 onFocus={(event) => {
                     setValue("");
                 }}
+                placeholder={placeHolder}
                 value={value}
                 id={id}
                 label={label}

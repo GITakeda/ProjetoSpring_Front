@@ -9,7 +9,6 @@ import { deleteByIdAluno, getAluno, getByIdAluno, postAluno, putAluno } from '..
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
-import ComboBox from '../ComboBox';
 import CampoTexto from '../CampoTexto';
 import CampoBusca from '../CampoBusca';
 
@@ -21,8 +20,6 @@ export default function Aluno() {
     const [classe, setClasse] = useState("");
     const [programa, setPrograma] = useState(0);
     const [programaDTO, setProgramaDTO] = useState({ id: 0 });
-
-    const [teste, setTeste] = useState("");
 
     const [atualizou, setAtualizou] = useState(0);
 
@@ -36,11 +33,22 @@ export default function Aluno() {
         setId(retorno.id);
         setNome(retorno.nome);
         setClasse(retorno.classe);
-        setPrograma(retorno.programaDTO);
+        setProgramaDTO(retorno.programaDTO);
+        setPrograma(retorno.programaDTO.id);
     }
 
     const errorHandler = useCallback((error) => {
         if (error.response) {
+            limpar();
+            notify(error.response.data.mensagem);
+        }
+    }, [notify]
+    )
+
+    const errorHandlerPrograma = useCallback((error) => {
+        if (error.response) {
+            setProgramaDTO({id: 0});
+            setPrograma(0);
             notify(error.response.data.mensagem);
         }
     }, [notify]
@@ -51,7 +59,9 @@ export default function Aluno() {
         setNome("");
         setClasse("");
         setPrograma(0);
+        setProgramaDTO({id: 0});
         atualizar();
+        console.log(atualizou)
     }
 
     const apagar = () => {
@@ -78,8 +88,6 @@ export default function Aluno() {
                 return;
             }
 
-            limpar();
-
             if (!id) {
                 postAluno(aluno, limpar, errorHandler);
                 notify("Aluno gravado!");
@@ -101,7 +109,8 @@ export default function Aluno() {
                     <CampoBusca setValue={setPrograma}
                         value={programa}
                         label="Programa"
-                        onBlur={() => { getByIdPrograma(programa, setProgramaDTO, errorHandler) }}
+                        placeHolder="Insira o id de um programa"
+                        onBlur={() => { getByIdPrograma(programa, setProgramaDTO, errorHandlerPrograma) }}
                         getDescricao={() => { return programaDTO.nome }}
                         validations={ (value) => {
                             if(value.match(/\D/)){
@@ -116,7 +125,7 @@ export default function Aluno() {
             </Box>
             <AccordionGenerico label="Registros" onClick={() => atualizar()}
                 components={[
-                    <TableGenerica id="tabela"
+                    <TableGenerica id="tabela" atualizou = {atualizou}
                         colunas={[{ name: "Código", column: "id" }, { name: "Nome", column: "nome" }, { name: "Classe", column: "classe" }, { name: "Programa", column: "programa_id" }]}
                         key={1}
                         setEntity={setEntity}
