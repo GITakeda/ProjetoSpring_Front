@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdMateria, getByIdMateria, getMateria, postMateria, putMateria } from '../../model/MateriaData';
-import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
 import CampoTexto from '../CampoTexto';

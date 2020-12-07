@@ -5,7 +5,7 @@ import CampoId from '../CampoId';
 import { useContext } from 'react';
 import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdMentor, getByIdMentor, getMentor, postMentor, putMentor } from '../../model/MentorData';
-import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro';
 import TableGenerica from '../Table/TableGenerica';
 import AccordionGenerico from '../AccordionGenerico'
 import CampoTexto from '../CampoTexto';

@@ -7,7 +7,7 @@ import { getByIdMentor } from '../../model/MentorData';
 import { deleteByIdMentoria, getByIdMentoria, getMentoria, postMentoria } from '../../model/MentoriaData';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext'
-import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
 import CampoBusca from '../CampoBusca';

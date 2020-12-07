@@ -7,10 +7,9 @@ import NotifyContext from '../../contexts/NotifyContext';
 import { deleteByIdAluno, getAluno, getByIdAluno, postAluno, putAluno } from '../../model/AlunoData';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
-import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro';
 import CampoTexto from '../CampoTexto';
 import CampoBusca from '../CampoBusca';
-
 
 export default function Aluno() {
 

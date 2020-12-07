@@ -5,7 +5,7 @@ import CampoId from '../CampoId';
 import { getPrograma, getByIdPrograma, postPrograma, deleteByIdPrograma, putPrograma } from '../../model/ProgramaData';
 import TableGenerica from '../Table/TableGenerica';
 import { useEffect } from 'react';
-import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
+import BotoesCadastro from '../BotoesCadastro';
 import NotifyContext from '../../contexts/NotifyContext'
 
 import AccordionGenerico from '../AccordionGenerico'

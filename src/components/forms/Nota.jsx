@@ -1,7 +1,7 @@
 import { Box, Typography, TableCell } from '@material-ui/core';
 import React, { useCallback } from 'react';
 import { useState } from 'react';
-import CampoId from '../CampoId';
+import CampoId from '../CampoId/CampoId';
 import { getByIdMentoria } from '../../model/MentoriaData'
 import { getByIdMateria } from '../../model/MateriaData'
 import {
@@ -16,8 +16,9 @@ import { deleteByIdNota, getByIdNota, getNota, postNota, putNota } from '../../m
 import BotoesCadastro from '../BotoesCadastro/BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica';
-import CampoTexto from '../CampoTexto'
-import CampoBusca from '../CampoBusca'
+import CampoTexto from '../CampoTexto';
+import CampoBusca from '../CampoBusca';
+import ComboBox from '../ComboBox';
 
 export default function Nota() {
 
@@ -26,6 +27,7 @@ export default function Nota() {
     const [mentoria_id, setMentoria_id] = useState(0);
     const [data, setData] = useState(Date.now);
     const [pontuacao, setPontuacao] = useState(0.0);
+    const [error, setError] = useState("");
 
     const [materia, setMateria] = useState({ id: 0, nome: "" });
     const [mentoria, setMentoria] = useState({ id: 0, alunoDTO: { nome: "" }, mentorDTO: { nome: "" } });
@@ -80,6 +82,7 @@ export default function Nota() {
         setMentoria({id: 0});
         setData(Date.now);
         setPontuacao(0.0);
+        atualizar();
     }
 
     const apagar = () => {
@@ -121,8 +124,13 @@ export default function Nota() {
 
                 event.preventDefault();
 
-                if (data == "Invalid Date") {
+                if (data === "Invalid Date" || error !== "") {
                     notify("Data inválida!");
+                    return;
+                }
+
+                if(pontuacao > 10 || pontuacao < 0){
+                    notify("Pontuação inválida");
                     return;
                 }
 
@@ -185,9 +193,13 @@ export default function Nota() {
                             value={data}
                             fullWidth
                             onChange={
-
                                 (date) => {
                                     setData(date);
+                                }
+                            }
+                            onError={
+                                (error) => {
+                                    setError(error);
                                 }
                             }
                             KeyboardButtonProps={{
