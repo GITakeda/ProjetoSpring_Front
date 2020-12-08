@@ -22,14 +22,14 @@ export default function TableGenerica({ colunas, getValues = (setValues, page, r
     };
 
     const handleSort = (columnId) => {
-        if(columnId === sort){
-            if(direction === "desc"){
+        if (columnId === sort) {
+            if (direction === "desc") {
                 setSort("");
                 setDirection("asc");
                 return;
             }
             setDirection("desc");
-        } else{
+        } else {
             setDirection("asc");
         }
 
@@ -46,14 +46,20 @@ export default function TableGenerica({ colunas, getValues = (setValues, page, r
                 <TableHead >
                     <TableRow>
                         {colunas.map((q, index) => {
-                            return <TableCell key={index} className="table-head-cell" style={{ color: 'white' }}>
-                                <TableSortLabel style={{ color: 'white' }} direction={direction}
-                                    onClick={
-                                        () => {
-                                            handleSort(q.column)
+                            return (
+                                <TableCell key={index}
+                                    className="table-head-cell"
+                                    style={{ color: 'white' }}>
+                                    <TableSortLabel style={{ color: 'white' }}
+                                        direction={direction}
+                                        onClick={
+                                            () => {
+                                                handleSort(q.column)
+                                            }
                                         }
-                                    } active={sort === q.column} >{q.name}</TableSortLabel>
-                            </TableCell>
+                                        active={sort === q.column}
+                                    >{q.name}</TableSortLabel>
+                                </TableCell>);
                         })}
                     </TableRow>
                 </TableHead>
@@ -79,7 +85,7 @@ export default function TableGenerica({ colunas, getValues = (setValues, page, r
                         <TablePagination
                             rowsPerPageOptions={[5, 15, 25, { label: 'All', value: -1 }]}
                             colSpan={3}
-                            count={Number(values.totalElements)}
+                            count={values.totalElements || 0}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{

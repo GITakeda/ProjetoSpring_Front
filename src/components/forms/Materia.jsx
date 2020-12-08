@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { Typography, Box } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { useState } from 'react';
 import CampoId from '../CampoId';
 import NotifyContext from '../../contexts/NotifyContext';
@@ -8,6 +8,7 @@ import BotoesCadastro from '../BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
 import CampoTexto from '../CampoTexto';
+import BoxCostumisado from '../BoxCostumisado';
 
 export default function Materia() {
 
@@ -73,9 +74,7 @@ export default function Materia() {
             }
         }}>
             <Typography component="h2" variant="h3" align="center">Matéria</Typography>
-            <Box align="center">
-                <Box width="50vw">
-
+            <BoxCostumisado>
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome"/>
@@ -83,8 +82,7 @@ export default function Materia() {
                     <CampoTexto value={descricao} setValue={setDescricao} id="descricao" label="Descrição"/>
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
-                </Box>
-            </Box>
+            </BoxCostumisado>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()}
                         components={

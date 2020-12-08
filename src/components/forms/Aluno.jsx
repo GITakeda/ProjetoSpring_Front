@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { Typography, Box, TableCell } from "@material-ui/core";
+import { Typography, TableCell } from "@material-ui/core";
 import { useState } from 'react';
 import { getByIdPrograma } from '../../model/ProgramaData'
 import CampoId from '../CampoId';
@@ -10,6 +10,7 @@ import TableGenerica from '../Table/TableGenerica';
 import BotoesCadastro from '../BotoesCadastro';
 import CampoTexto from '../CampoTexto';
 import CampoBusca from '../CampoBusca';
+import BoxCostumisado from '../BoxCostumisado';
 
 export default function Aluno() {
 
@@ -91,9 +92,7 @@ export default function Aluno() {
             }
         }}>
             <Typography component="h2" variant="h3" align="center">Aluno</Typography>
-            <Box align="center">
-                <Box width="50vw">
-
+            <BoxCostumisado>
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
@@ -115,8 +114,7 @@ export default function Aluno() {
                     />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
-                </Box>
-            </Box>
+            </BoxCostumisado>
             <AccordionGenerico label="Registros" onClick={() => atualizar()}
                 components={[
                     <TableGenerica id="tabela" atualizou = {atualizou}

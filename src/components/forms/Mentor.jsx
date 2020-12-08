@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useState } from 'react';
-import { Typography, Box } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import CampoId from '../CampoId';
 import { useContext } from 'react';
 import NotifyContext from '../../contexts/NotifyContext';
@@ -9,6 +9,7 @@ import BotoesCadastro from '../BotoesCadastro';
 import TableGenerica from '../Table/TableGenerica';
 import AccordionGenerico from '../AccordionGenerico'
 import CampoTexto from '../CampoTexto';
+import BoxCostumisado from '../BoxCostumisado';
 
 export default function Mentor() {
 
@@ -67,13 +68,11 @@ export default function Mentor() {
             }
         }}>
             <Typography component="h2" variant="h3" align="center">Mentor</Typography>
-            <Box align="center">
-                <Box width="50vw">
+            <BoxCostumisado>
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome"/>
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
-                </Box>
-            </Box>
+            </BoxCostumisado>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica

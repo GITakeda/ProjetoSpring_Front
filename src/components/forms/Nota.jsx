@@ -1,4 +1,4 @@
-import { Box, Typography, TableCell } from '@material-ui/core';
+import { Typography, TableCell } from '@material-ui/core';
 import React, { useCallback } from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId/CampoId';
@@ -19,6 +19,7 @@ import TableGenerica from '../Table/TableGenerica';
 import CampoTexto from '../CampoTexto';
 import CampoBusca from '../CampoBusca';
 import ComboBox from '../ComboBox';
+import BoxCostumisado from '../BoxCostumisado';
 
 export default function Nota() {
 
@@ -144,9 +145,7 @@ export default function Nota() {
             }
         }>
             <Typography component="h2" variant="h3" align="center" >Nota</Typography>
-            <Box align="center">
-                <Box width="50vw">
-
+            <BoxCostumisado>
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <CampoBusca setValue={setMentoria_id} value={mentoria_id} label="Mentoria"
@@ -211,8 +210,7 @@ export default function Nota() {
                     <CampoTexto value={pontuacao} setValue={setPontuacao} onFocus={() => {setPontuacao("")}} id="pontuacao" label="Pontuação" type="number" maxSize={10} />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
-                </Box>
-            </Box>
+            </BoxCostumisado>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"

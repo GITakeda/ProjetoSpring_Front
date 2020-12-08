@@ -1,4 +1,4 @@
-import { Box, TableCell, Typography } from '@material-ui/core';
+import { TableCell, Typography } from '@material-ui/core';
 import React, { useCallback, useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -11,6 +11,7 @@ import BotoesCadastro from '../BotoesCadastro';
 import AccordionGenerico from '../AccordionGenerico';
 import TableGenerica from '../Table/TableGenerica'
 import CampoBusca from '../CampoBusca';
+import BoxCostumisado from '../BoxCostumisado';
 
 export default function Mentoria() {
 
@@ -98,8 +99,7 @@ export default function Mentoria() {
             }
         }>
             <Typography component="h2" variant="h3" align="center">Mentoria</Typography>
-            <Box align="center">
-                <Box width="50vw">
+            <BoxCostumisado>
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <CampoBusca setValue={setAluno_id}
@@ -126,8 +126,7 @@ export default function Mentoria() {
                     />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
-                </Box>
-            </Box>
+            </BoxCostumisado>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"

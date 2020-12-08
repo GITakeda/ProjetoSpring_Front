@@ -1,4 +1,4 @@
-import { Typography, Box } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import React, { useCallback } from 'react';
 import { useState } from 'react';
 import CampoId from '../CampoId';
@@ -11,6 +11,7 @@ import NotifyContext from '../../contexts/NotifyContext'
 import AccordionGenerico from '../AccordionGenerico'
 import { useContext } from 'react';
 import CampoTexto from '../CampoTexto';
+import BoxCostumisado from '../BoxCostumisado';
 
 export default function Programa() {
 
@@ -76,8 +77,7 @@ export default function Programa() {
         }
         }>
             <Typography component="h2" variant="h3" align="center">Programa</Typography>
-            <Box align="center">
-                <Box width="50vw">
+            <BoxCostumisado>
                     <CampoId setValue={setId} value={id} onBlur={handleBusca} />
 
                     <CampoTexto value={nome} setValue={setNome} id="nome" label="Nome" />
@@ -85,8 +85,7 @@ export default function Programa() {
                     <CampoTexto value={ano} setValue={setAno} id="ano" label="Ano" type="number" maxSize={4} />
 
                     <BotoesCadastro type="submit" limpar={limpar} apagar={apagar} />
-                </Box>
-            </Box>
+            </BoxCostumisado>
 
             <AccordionGenerico label="Registros" onClick={() => atualizar()} components={[
                 <TableGenerica id="tabela"
